@@ -1,0 +1,204 @@
+@import "tailwindcss";
+
+@layer base {
+    .hero-ring {
+        @apply absolute inset-0  border-2 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border-emerald-300/5 shadow-[0_0_80px_inset] shadow-emerald-300/5
+    }
+}
+
+@theme {
+    --animate-ping-large: ping-large 1s ease-in-out infinite;
+    --animate-quietPlay: quietPlay 1.2s ease-in-out infinite;
+    --animate-normalPlay: normalPlay 1.2s ease-in-out infinite;
+    --animate-loudPlay: loudPlay 1.2s ease-in-out infinite;
+  
+    @keyframes ping-large {
+      75%, 100% {
+        transform: scale(3);
+        opacity: 0,
+      }
+    }
+    
+    @keyframes quietPlay {
+        25%{ transform: scaleY(0.6) }
+        50%{ transform: scaleY(0.4) }
+        75%{ transform: scaleY(0.8) }
+    }
+
+    @keyframes normalPlay {
+        25%{ transform: scaleY(1) }
+        50%{ transform: scaleY(0.4) }
+        75%{ transform: scaleY(0.6) }
+    }
+
+    @keyframes loudPlay {
+        25%{ transform: scaleY(1) }
+        50%{ transform: scaleY(0.4) }
+        75%{ transform: scaleY(1.2) }
+    }
+}
+
+.container-content {
+  max-width: 1100px;
+  padding: 0 20px;
+  margin: 0 auto;
+}
+
+html:focus-within {
+    scroll-behavior: smooth;
+}
+
+.link__socials {
+    margin-left: 14px;
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    gap: 0.8rem;
+    z-index: 1000;
+}
+
+@media only screen and (width >= 48rem) {
+  .link__socials {
+    display: flex;
+  }
+}
+  
+.link__socials a {
+    width: 42px;
+    height: 42px;
+    background: rgba(217, 217, 217, 0.1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-right: 6px;
+    line-height: 1;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    position: relative; /* cần để ::before hoạt động đúng */
+    overflow: hidden; /* tránh phần ::before bị tràn */
+}
+  
+.link__socials a::before {
+    content: "";
+    width: 42px;
+    height: 42px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #ffffff;
+    border-radius: 50%;
+    transform: scale(0);
+    transition: transform 0.3s ease-in-out;
+    z-index: 0;
+}
+  
+.link__socials a:hover::before {
+    transform: scale(1);
+}
+  
+.link__socials a .social-icon {
+    width: 40%;
+    z-index: 1;
+    transition: 0.3s ease-in-out;
+    color: white;
+}
+  
+.link__socials a:hover .social-icon {
+    filter: brightness(0) saturate(100%) invert(0%) sepia(7%) saturate(98%) hue-rotate(346deg) brightness(95%) contrast(86%);
+}
+
+@keyframes quiet {
+    25%{
+      transform: scaleY(.6);
+    }
+    50%{
+      transform: scaleY(.4);
+    }
+    75%{
+      transform: scaleY(.8);
+    }
+}
+  
+@keyframes normal {
+    25%{
+      transform: scaleY(1);
+    }
+    50%{
+      transform: scaleY(.4);
+    }
+    75%{
+      transform: scaleY(.6);
+    }
+}
+@keyframes loud {
+    25%{
+      transform: scaleY(1);
+    }
+    50%{
+      transform: scaleY(.4);
+    }
+    75%{
+      transform: scaleY(1.2);
+    }
+}
+
+
+/* SoundWave css */
+.music-play{
+    display: flex;
+    justify-content: space-between;
+    height: 56px;
+    --boxSize: 5px;
+    --gutter: 3px;
+    width: calc((var(--boxSize) + var(--gutter)) * 7);
+}
+  
+.bar{
+    transform: scaleY(.4);
+    height: 100%;
+    width: var(--boxSize);
+    background: linear-gradient(oklch(84.5% .143 164.978), #12E2DC );
+    box-shadow: 0 0 5px oklch(84.5% .143 164.978);
+    animation-duration: 1.2s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    border-radius: 8px;
+}
+  
+.bar1{
+    animation-name: quiet;
+}
+  
+.bar2{
+    animation-name: normal;
+
+}
+  
+.bar3{
+    animation-name: quiet;
+
+}
+  
+.bar4{
+    animation-name: loud;
+
+}
+  
+.bar5{
+    animation-name: quiet;
+}
+
+.bar6{
+  animation-name: normal;
+
+}
+
+.bar7{
+  animation-name: quiet;
+}
+
+.bar.paused {
+    animation-play-state: paused
+}
