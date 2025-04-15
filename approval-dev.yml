@@ -1,7 +1,7 @@
 version: '3.6'
 
 services:
-  edm:
+  edm-cms:
     image: %DOCKER_IMAGE%
     stop_grace_period: 60s
     networks:
@@ -18,7 +18,7 @@ services:
         - traefik.docker.network=traefik_traefik_public
         - traefik.frontend.rule=HostRegexp:{subdomain:[a-z0-9-]+}.dev.apusplatform.com;PathPrefix:/edm
         - traefik.port=80
-        - traefik.backend=edm
+        - traefik.backend=edm-cms
         - traefik.frontend.priority=34
     # healthcheck:
     #   test: ["CMD", "curl", "-f", "http://localhost:8000"]

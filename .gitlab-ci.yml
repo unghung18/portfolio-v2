@@ -3,10 +3,10 @@ variables:
   APP_NAME: edm-cms
   KUBECONFIG: /etc/deploy/config
   TESTING_IMAGE: ${CI_REGISTRY_IMAGE}/testing
-  STAGING_IMAGE: apuscorp/edm:dev-${CI_PIPELINE_IID}-${CI_COMMIT_SHA}
-  PROD_IMAGE: apuscorp/edm:prod-${CI_PIPELINE_IID}-${CI_COMMIT_SHA}
-  STAGING_IMAGE_LTS: apuscorp/edm:dev-latest
-  PROD_IMAGE_LTS: apuscorp/edm:prod-latest
+  STAGING_IMAGE: apuscorp/edm-cms:dev-${CI_PIPELINE_IID}-${CI_COMMIT_SHA}
+  PROD_IMAGE: apuscorp/edm-cms:prod-${CI_PIPELINE_IID}-${CI_COMMIT_SHA}
+  STAGING_IMAGE_LTS: apuscorp/edm-cms:dev-latest
+  PROD_IMAGE_LTS: apuscorp/edm-cms:prod-latest
   DOCKER_DRIVER: overlay
   DOCKER_TLS_CERTDIR: ''
 
@@ -46,7 +46,7 @@ services:
 #     # - |
 #     #   yarn add -D sonarqube-scanner --dev \
 #     #   yarn add -D jest-sonar-reporter --dev
-#     - sonar-scanner -Dsonar.projectKey=apusplatform.com:edm -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_ANALYSIS_TOKEN -Dsonar.javascript.file.suffixes=.js,.jsx -Dsonar.typescript.lcov.reportPaths=coverage/lcov.info -Dsonar.qualitygate.wait=true -Dsonar.qualitygate.timeout=300
+#     - sonar-scanner -Dsonar.projectKey=apusplatform.com:edm-cms -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_ANALYSIS_TOKEN -Dsonar.javascript.file.suffixes=.js,.jsx -Dsonar.typescript.lcov.reportPaths=coverage/lcov.info -Dsonar.qualitygate.wait=true -Dsonar.qualitygate.timeout=300
 #   allow_failure: false
 #   rules:
 #     - if: '$CI_PIPELINE_SOURCE == "push"'
@@ -87,7 +87,7 @@ deploy-dev:
     - dev-runner-new
   stage: deploy
   variables:
-    SERVICE_NAME: edm
+    SERVICE_NAME: edm-cms
   environment: sandbox
   script:
     - docker login -u "${CI_REGISTRY_USER}" -p "${CI_REGISTRY_PASSWORD}" ${CI_REGISTRY}
@@ -96,8 +96,8 @@ deploy-dev:
     - echo "$TLSCACERDEV_NEW" > ~/.docker/ca.pem
     - echo "$TLSCERTDEV_NEW" > ~/.docker/cert.pem
     - echo "$TLSKEYDEV_NEW" > ~/.docker/key.pem
-    - sed -i -e "s+%DOCKER_IMAGE%+${STAGING_IMAGE}+g" edm-dev.yml
-    - docker stack deploy --compose-file=edm-dev.yml --with-registry-auth ${SERVICE_NAME}
+    - sed -i -e "s+%DOCKER_IMAGE%+${STAGING_IMAGE}+g" edm-cms-dev.yml
+    - docker stack deploy --compose-file=edm-cms-dev.yml --with-registry-auth ${SERVICE_NAME}
   only:
     - develop
     - develop-new
@@ -107,7 +107,7 @@ deploy-staging:
     - apus-runner-stg
   stage: deploy
   variables:
-    SERVICE_NAME: edm
+    SERVICE_NAME: edm-cms
   environment: sandbox
   script:
     - docker login -u "${CI_REGISTRY_USER}" -p "${CI_REGISTRY_PASSWORD}" ${CI_REGISTRY}
@@ -116,8 +116,8 @@ deploy-staging:
     - echo "$TLSCACERSTAG_NEW" > ~/.docker/ca.pem
     - echo "$TLSCERTSTAG_NEW" > ~/.docker/cert.pem
     - echo "$TLSKEYSTAG_NEW" > ~/.docker/key.pem
-    - sed -i -e "s+%DOCKER_IMAGE%+${STAGING_IMAGE}+g" edm-stg.yml
-    - docker stack deploy --compose-file=edm-stg.yml --with-registry-auth ${SERVICE_NAME}
+    - sed -i -e "s+%DOCKER_IMAGE%+${STAGING_IMAGE}+g" edm-cms-stg.yml
+    - docker stack deploy --compose-file=edm-cms-stg.yml --with-registry-auth ${SERVICE_NAME}
   only:
     - staging
 
